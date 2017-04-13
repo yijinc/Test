@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片垂直居中的几种方法</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="container">
+	<h1>图片垂直居中的几种方法</h1>
+	
+	<h2>1.将容器设置为 display: table-cell; vertical-align:middle; </h2>
+	<div class="box box-1">
+		<img src="avatar.jpg" alt="">
+	</div>
+
+	<h2>2.将容器设置为 line-height: 200px; font-size: 0   这里font-size:0 不可省略，否则会有偏差</h2>
+	<div class="box box-2">
+		<img src="avatar.jpg" alt="">
+	</div>
+
+	<h2>3.图片绝对定位</h2>
+	<div class="box box-3">
+		<img src="avatar.jpg" alt="">
+	</div>
+
+	<h2>4.直接将图片设置为容器背景 backgroud-position: center center</h2>
+	<div class="box box-4" style="background-image:url('avatar.jpg')">
+		
+	</div>
+</div>
+	
+</body>
+</html>

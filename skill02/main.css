@@ -1,0 +1,43 @@
+@import url('../common/base.css');
+
+h2 {
+	margin: 10px 0;
+}
+.box {
+	width: 200px;
+	height: 200px;
+	border: 1px solid red;
+    text-align: center;
+}
+
+.box.box-1 {
+	display: table-cell;
+    vertical-align: middle;
+}
+.box-1 img {
+	vertical-align: middle;
+}
+
+.box.box-2 {
+	line-height: 200px;
+	font-size: 0
+}
+.box-2 img {
+	vertical-align: middle;
+}
+
+.box.box-3 {
+	position: relative;
+}
+.box-3 img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -50px;
+	margin-left: -50px;
+}
+
+.box.box-4 {
+	background-repeat: no-repeat;
+	background-position: center;
+}

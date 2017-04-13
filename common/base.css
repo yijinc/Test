@@ -1,0 +1,51 @@
+@import url('reset.css');
+
+html {
+	font-family: Arial,Verdana;
+}
+
+h1 {
+	margin: 20px 0;
+	font-size: 42px;
+	font-weight: bold;
+}
+
+pre {
+	padding: 20px;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (min-width: 768px) {
+	.container {
+    	width: 750px;
+	}
+}
+
+@media (min-width: 992px) {
+	.container {
+    	width: 970px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.container {
+    	width: 1170px;
+	}
+}
