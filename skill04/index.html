@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>样式化checkbox、radio</title>
+    <style>
+        * { margin: 0; padding: 0 }
+        .box { width: 320px; margin: 20px auto; text-align: center; }
+
+        label { cursor: pointer;  display: inline-flex;  align-items: center;  white-space: nowrap;  vertical-align: middle; margin-right: 10px;}
+        label > span { margin-left: 10px;}
+
+        .checkbox, .radio {  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
+        .checkbox > input[type=checkbox], .radio > input[type=radio] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
+        .checkbox > .icon, .radio > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; }
+
+        .checkbox > .icon { background-color: #bdc3c7; text-align: center }
+        .checkbox > .icon > .icon-checked { opacity: 0; color: #fff; }
+        .checkbox > input[type=checkbox]:hover + .icon > .icon-checked {  opacity: 1 }
+        .checkbox > input[type=checkbox]:checked + .icon { background-color: #1abc9c; }
+        .checkbox > input[type=checkbox]:checked + .icon > .icon-checked {  opacity: 1 }
+
+        .radio > .icon { border: 3px solid #bdc3c7; border-radius: 50%;}
+        .radio > .icon::after { content: ''; display: none; position: absolute; width: 8px; height: 8px; border-radius: 50%; background-color: #bdc3c7; top: 3px; left: 3px;}
+        .radio > input[type=radio]:hover + .icon::after { display: block; }
+        .radio > input[type=radio]:checked + .icon { border-color: #1abc9c }
+        .radio > input[type=radio]:checked + .icon::after { display: block; background-color: #1abc9c }
+
+
+        .content { width: 80%; min-width: 320px; margin: 0 auto;}
+        .content p{ line-height: 30px}
+
+
+
+    </style>
+</head>
+<body>
+
+<select name="colors" id="">
+    <option value="'red'">red</option>
+    <option value="'green'">green</option>
+    <option value="'blue'">blue</option>
+</select>
+
+<div class="box">
+    <label for="">
+        <div class="checkbox">
+            <input type="checkbox">
+            <div class="icon">
+                <span class="icon-checked">√</span>
+            </div>
+        </div>
+        <span>电影</span>
+    </label>
+
+    <label>
+        <div class="checkbox">
+            <input type="checkbox" checked>
+            <div class="icon">
+                <span class="icon-checked">√</span>
+            </div>
+        </div>
+        <span>音乐</span>
+    </label>
+</div>
+
+<div class="box">
+    <label class="radio-sex">
+        <div class="radio">
+            <input type="radio" name="sex" checked id="sex-0">
+            <span class="icon"></span>
+        </div>
+        <span> 男 </span>
+    </label>
+    <label class="radio-sex">
+        <div class="radio">
+            <input type="radio" name="sex" id="sex-1">
+            <span class="icon"></span>
+        </div>
+        <span> 女 </span>
+    </label>
+</div>
+
+<div class="content">
+    <p>用纯css实现 checkbox 、radio 样式化，主要通过改变 input:checked + 兄弟元素 的样式。</p>
+    <p>改变input checked状态（点击）有2种实现 </p>
+    <p style="text-indent: 30px;">1.input元素浮动在最上层opacity=0，直接点击在input元素上，其大小刚好是整块大小</p>
+    <p style="text-indent: 30px;">2.通过点击父层的label元素，需指定input的id，label间接改变input的checked</p>
+    <p>个人习惯用第一种，不需要设置一一对应的id（可在最外层决定是否加label）；但第二种较有语义，大多UI组件库采用</p>
+    <p> label 元素 没有for属性时 默认指定子元素第一个input（如：点击上面文字音乐），有for属性必须指明input的id （如：点击上面文字电影无效）</p>
+
+</div>
+
+
+</body>
+</html>
