@@ -6,31 +6,53 @@
     <style>
         * { margin: 0; padding: 0 }
         .box { width: 320px; margin: 20px auto; text-align: center; }
+        label { cursor: pointer;}
+        label.radio-sex {  display: inline-flex;  align-items: center;  white-space: nowrap;  vertical-align: middle; margin-right: 10px;}
+        label.radio-sex > span { margin-left: 10px;}
+        .content { width: 80%; min-width: 320px; margin: 0 auto;}
+        .content p{ line-height: 30px}
 
-        label { cursor: pointer;  display: inline-flex;  align-items: center;  white-space: nowrap;  vertical-align: middle; margin-right: 10px;}
-        label > span { margin-left: 10px;}
 
-        .checkbox, .radio {  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
-        .checkbox > input[type=checkbox], .radio > input[type=radio] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
-        .checkbox > .icon, .radio > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; }
-
-        .checkbox > .icon { background-color: #bdc3c7; text-align: center }
+        /**** checkbox ****/
+        .checkbox{  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
+        .checkbox > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; background-color: #bdc3c7; text-align: center }
         .checkbox > .icon > .icon-checked { opacity: 0; color: #fff; }
+        .checkbox > input[type=checkbox] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
         .checkbox > input[type=checkbox]:hover + .icon > .icon-checked {  opacity: 1 }
         .checkbox > input[type=checkbox]:checked + .icon { background-color: #1abc9c; }
         .checkbox > input[type=checkbox]:checked + .icon > .icon-checked {  opacity: 1 }
 
-        .radio > .icon { border: 3px solid #bdc3c7; border-radius: 50%;}
+
+        /**** radio ****/
+        .radio {  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
+        .radio > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; border: 3px solid #bdc3c7; border-radius: 50%;}
         .radio > .icon::after { content: ''; display: none; position: absolute; width: 8px; height: 8px; border-radius: 50%; background-color: #bdc3c7; top: 3px; left: 3px;}
+        .radio > input[type=radio] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
         .radio > input[type=radio]:hover + .icon::after { display: block; }
         .radio > input[type=radio]:checked + .icon { border-color: #1abc9c }
         .radio > input[type=radio]:checked + .icon::after { display: block; background-color: #1abc9c }
 
 
-        .content { width: 80%; min-width: 320px; margin: 0 auto;}
-        .content p{ line-height: 30px}
+        /**** toggle ****/
+        .toggle {  display: inline-block;  overflow: hidden;  width: 60px;  height: 40px;  border-radius: 100px;  background-color: #bdc3c7;  box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05); position: relative }
+        .toggle > input[type=checkbox] {position: absolute;  display: block;  cursor: pointer;  top: 0;  left: 0;  width: 100%;  height: 100%;  opacity: 0;  z-index: 6;}
+        .toggle > span { display: block; position: absolute;}
+        .toggle .switch {  left: 2px;  top: 2px;  bottom: 2px;  right: 22px;  background-color: #fff;  border-radius: 36px;  z-index: 1;  transition: .35s cubic-bezier(0.785, 0.135, 0.150, 0.860);  transition-property: left, right;  transition-delay: 0s, .05s;  box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+        .toggle .track {  left: 0;  top: 0;  right: 0;  bottom: 0;  transition: .35s cubic-bezier(0.785, 0.135, 0.150, 0.860);  box-shadow: inset 0 0 0 2px rgba(0,0,0,.05);  border-radius: 40px;  }
+        .toggle > input[type=checkbox]:checked ~ .switch { right: 2px;  left: 22px; }
+        .toggle > input[type=checkbox]:checked ~ .track { box-shadow: inset 0 0 0 20px #1abc9c; }
 
 
+        /**** switch *****/
+        .toggle2 { display: inline-block;  overflow: hidden; height: 30px; width: 80px; background-color: #bdc3c7;  box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05); position: relative;  border-radius: 60px;  color: #fff;  zoom: 1;  transition: 0.25s;}
+        .toggle2 > label { display: block;  font-weight: 700;  height: 30px; line-height: 30px; width: 80px;  position: absolute;  text-align: center;  z-index: 2; box-sizing: border-box; top: 0; left: 0; }
+        .toggle2  label::after { display: block; content: ''; width: 22px; height: 22px; border-radius: 50%; position: absolute; top: 4px; }
+        .toggle2  label.switch-on { background-color: #34495e; padding-right: 16px; }
+        .toggle2  label.switch-on::after { background-color: #1abc9c; right: 4px; }
+        .toggle2  label.switch-off { background-color: #cbd2d8; padding-left: 16px; }
+        .toggle2  label.switch-off::after { background-color: #7F8C97; left: 4px; }
+        .toggle2 > input[type=radio]:checked + .switch-on { left: -80px;}
+        .toggle2 > input[type=radio]:checked + .switch-off { left: 80px;}
 
     </style>
 </head>
@@ -43,7 +65,7 @@
 </select>
 
 <div class="box">
-    <label for="">
+    <label class="radio-sex" for="">
         <div class="checkbox">
             <input type="checkbox">
             <div class="icon">
@@ -53,7 +75,7 @@
         <span>电影</span>
     </label>
 
-    <label>
+    <label class="radio-sex">
         <div class="checkbox">
             <input type="checkbox" checked>
             <div class="icon">
@@ -89,6 +111,28 @@
     <p>个人习惯用第一种，不需要设置一一对应的id（可在最外层决定是否加label）；但第二种较有语义，大多UI组件库采用</p>
     <p> label 元素 没有for属性时 默认指定子元素第一个input（如：点击上面文字音乐），有for属性必须指明input的id （如：点击上面文字电影无效）</p>
 
+</div>
+
+
+<div class="box">
+
+    <div class="toggle">
+        <input type="checkbox">
+        <span class="switch"></span>
+        <span class="track"></span>
+    </div>
+
+    <div class="toggle2">
+        <input type="radio" name="switch" id="switch-on">
+        <label class="switch-on" for="switch-on">ON</label>
+        <input type="radio" name="switch" id="switch-off">
+        <label class="switch-off" for="switch-off">OFF</label>
+    </div>
+</div>
+
+<div class="content">
+    <p>chckbox 、 radio 也可以开关形式呈现，原理跟上面一样。可以增加css3 transition 过度效果</p>
+    <p> radio 配合 label元素 和 js 可以达到更好效果，缓解css多层关系 </p>
 </div>
 
 
