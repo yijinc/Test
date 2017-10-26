@@ -2,91 +2,61 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
-	<link rel="stylesheet" href="main.css">
+	<title>css3 圆环进度效果</title>
+	<style>
+		* { margin: 0; padding: 0; font-family: "PingFang SC","Lantinghei SC","Microsoft YaHei","黑体",arial,sans-serif,tahoma;}
+		.container { min-width: 320px; margin: 0 auto; text-align: center}
+
+		.progress { width: 200px; height: 200px; margin: 50px auto; position: relative;}
+		.progress .left, .progress .right { width: 50%; height: 100%; position: relative; float: left; overflow: hidden;}
+		.progress .left .semicircle, .progress .right .semicircle { width: 100%; height: 100%; position: absolute; box-sizing: border-box;  transform: rotate(180deg); border: #ff80ab solid 30px; }
+		.progress .left .semicircle{  border-radius: 200px 0 0 200px; transform-origin: right center; border-right: none; }
+		.progress .right .semicircle { border-radius: 0 200px 200px 0; transform-origin: left center; border-left: none;}
+
+		.progress::after { display: block; content: attr(title); position: absolute; top: 50px; right: 50px; bottom: 50px; left: 50px; font: italic bold 50px/100px arial; color: #2C3E50;}
+	</style>
 </head>
 <body>
 <div class="container">
-	<h1>CSS reset</h1>
-	<p>以下这个CSS reset是个人根据浏览器的默认值以及以往项目中的经验所整理的，并不一定合适所有人，但相信这个可以作为一个参考提供给各位。如果又兴趣使用的话，可以直接调用</p>
 
-	
-<pre>
-html {
-  font-family: sans-serif; /* 更改默认字体 */
-  line-height: 1.15; /* 统一行高 */
-  color:#000; /*页面字体颜色*/
-  background:#FFF; /*页面背景*/
-}
+	<div class="progress" title="123">
+		<div class="left">
+			<div class="semicircle" id="leftCircle"></div>
+		</div>
+		<div class="right">
+			<div class="semicircle" id="rightCircle"></div>
+		</div>
+	</div>
 
-body,
-div,
-dl,dt,dd,
-ul,ol,li,
-h1,h2,h3,h4,h5,h6,
-pre,code,
-form,fieldset,legend,input,textarea,
-p,blockquote,
-th,td{
-	margin: 0;	/*清除默认外边距和内边距*/
-	padding: 0
-}
+</div>
 
-article,
-aside,section,
-footer,header,nav,
-figcaption,figure{
-  display: block; /* 让ie9以下不识别元素 块级显示*/
-}
+<script>
+	window.onload = function () {
 
-h1,h2,h3,h4,h5,h6{
-	font-size: 100%;
-	font-weight: normal
-}
+	    var x = 0;
+	    var lc = document.getElementById('leftCircle');
+        var rc = document.getElementById('rightCircle');
 
-table{
-	border-collapse: collapse;
-	border-spacing: 0
-}
+		setInterval( rotate, 20);
+		
+		function rotate() {
 
-fieldset,img{
-	border: 0
-}
+		    if(x>=360) {
+		        x=0;
+                lc.style = rc.style = 'transform: rotate(180deg)';
+			}
 
-address,caption,cite,code,dfn,em,strong,th,var{
-	font-style: normal;
-	font-weight: normal
-}
+			if(x>180) {
+                lc.style = 'transform: rotate(' + x +'deg)';
+			} else {
+                rc.style = 'transform: rotate(' + (180+x) +'deg)';
+			}
 
-ol,ul{
-	list-style: none
-}
+			document.querySelector('.progress').title = x;
 
-q:before,q:after{
-	content:''
-}
-
-abbr,acronym{
-	border: 0;
-	font-variant: normal
-}
-	
-sup{
-	vertical-align: text-top
-}
-
-sub{
-	vertical-align: text-bottom
-}
-	
-input,textarea,select{
-	font-family:inherit;
-	font-size:inherit;
-	font-weight:inherit;
-	*font-size:100%
-}		
-</pre>
-
-</div>	
+            x++;
+        }
+    }
+</script>
 </body>
 </html>
