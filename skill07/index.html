@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>css3 圆环进度效果</title>
+	<style>
+		* { margin: 0; padding: 0; font-family: "PingFang SC","Lantinghei SC","Microsoft YaHei","黑体",arial,sans-serif,tahoma;}
+		.container { min-width: 320px; margin: 0 auto; text-align: center}
+
+		.progress { width: 200px; height: 200px; margin: 50px auto; position: relative;}
+		.progress .left, .progress .right { width: 50%; height: 100%; position: relative; float: left; overflow: hidden;}
+		.progress .left .semicircle, .progress .right .semicircle { width: 100%; height: 100%; position: absolute; box-sizing: border-box;  transform: rotate(180deg); border: #ff80ab solid 30px; }
+		.progress .left .semicircle{  border-radius: 200px 0 0 200px; transform-origin: right center; border-right: none; }
+		.progress .right .semicircle { border-radius: 0 200px 200px 0; transform-origin: left center; border-left: none;}
+
+		.progress::after { display: block; content: attr(title); position: absolute; top: 50px; right: 50px; bottom: 50px; left: 50px; font: italic bold 50px/100px arial; color: #2C3E50;}
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="progress" title="123">
+		<div class="left">
+			<div class="semicircle" id="leftCircle"></div>
+		</div>
+		<div class="right">
+			<div class="semicircle" id="rightCircle"></div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	window.onload = function () {
+
+	    var x = 0;
+	    var lc = document.getElementById('leftCircle');
+        var rc = document.getElementById('rightCircle');
+
+		setInterval( rotate, 20);
+		
+		function rotate() {
+
+		    if(x>=360) {
+		        x=0;
+                lc.style = rc.style = 'transform: rotate(180deg)';
+			}
+
+			if(x>180) {
+                lc.style = 'transform: rotate(' + x +'deg)';
+			} else {
+                rc.style = 'transform: rotate(' + (180+x) +'deg)';
+			}
+
+			document.querySelector('.progress').title = x;
+
+            x++;
+        }
+    }
+</script>
+</body>
+</html>

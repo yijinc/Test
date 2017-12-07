@@ -2,61 +2,84 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>css3 圆环进度效果</title>
-	<style>
-		* { margin: 0; padding: 0; font-family: "PingFang SC","Lantinghei SC","Microsoft YaHei","黑体",arial,sans-serif,tahoma;}
-		.container { min-width: 320px; margin: 0 auto; text-align: center}
+	<title>css的hover属性</title>
+	<style type="text/css">
+		.wrap {
+			width: 900px;
+			margin: 0 auto;
+			text-align: center;
+		}
+		.box {
+			border: 1px solid #333;
+			width: 200px;
+			height: 100px;
+			cursor: pointer;
+			margin: 0 auto;
+			position: relative;
+		}
+		.box + p {
+			margin-bottom: 50px;
+		}
 
-		.progress { width: 200px; height: 200px; margin: 50px auto; position: relative;}
-		.progress .left, .progress .right { width: 50%; height: 100%; position: relative; float: left; overflow: hidden;}
-		.progress .left .semicircle, .progress .right .semicircle { width: 100%; height: 100%; position: absolute; box-sizing: border-box;  transform: rotate(180deg); border: #ff80ab solid 30px; }
-		.progress .left .semicircle{  border-radius: 200px 0 0 200px; transform-origin: right center; border-right: none; }
-		.progress .right .semicircle { border-radius: 0 200px 200px 0; transform-origin: left center; border-left: none;}
+		.box-1 {
 
-		.progress::after { display: block; content: attr(title); position: absolute; top: 50px; right: 50px; bottom: 50px; left: 50px; font: italic bold 50px/100px arial; color: #2C3E50;}
+		}
+		.box-1:hover {
+			background-color: red;
+			color: #fff;
+			border-color: red;
+		}
+
+		.box-2 div {
+			position: absolute;
+			width: 100px;
+			height: 60px;
+			line-height: 60px;
+			top: 20px;
+			left: 50px;
+			border: 1px solid #999;
+			opacity: .3;
+		}
+		.box-2:hover {
+			border-color: red;
+		}
+		.box-2:hover div {
+			background-color: red;
+			color: #fff;
+			border-color: red;
+		}
+
+		.box-3 + .next {
+			height: 20px;
+			width: 100px;
+			background-color: #999;
+			margin: 0 auto;
+			transition: width 2s;
+		}
+		.box-3:hover + .next {
+			width: 800px;
+			background-color: red;
+		}
+
 	</style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
-	<div class="progress" title="123">
-		<div class="left">
-			<div class="semicircle" id="leftCircle"></div>
-		</div>
-		<div class="right">
-			<div class="semicircle" id="rightCircle"></div>
-		</div>
-	</div>
+	<div class="box box-1"></div>
+	<p>改变自身属性 selector:hover { } </p>
 
+	<div class="box box-2"><div>child</div></div>
+	<p>改变子元素属性 selector:hover child, selector:hover:before, selector:hover:after { } </p>
+
+	<div class="box box-3"></div><div class="next">next</div>
+	<p>改变兄弟元素属性 selector:hover + .next {} </p>
+
+	<br><br>
+	<hr>
+	<p>这其实是一个选择器使用问题，经常可代替addClass、removeClass，推荐尽可能使用hover。
+		<br>可以使用css3 的 transition 让变化有过渡效果 </p>
 </div>
 
-<script>
-	window.onload = function () {
-
-	    var x = 0;
-	    var lc = document.getElementById('leftCircle');
-        var rc = document.getElementById('rightCircle');
-
-		setInterval( rotate, 20);
-		
-		function rotate() {
-
-		    if(x>=360) {
-		        x=0;
-                lc.style = rc.style = 'transform: rotate(180deg)';
-			}
-
-			if(x>180) {
-                lc.style = 'transform: rotate(' + x +'deg)';
-			} else {
-                rc.style = 'transform: rotate(' + (180+x) +'deg)';
-			}
-
-			document.querySelector('.progress').title = x;
-
-            x++;
-        }
-    }
-</script>
 </body>
 </html>
