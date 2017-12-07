@@ -2,227 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SVG图像实现的加载效果</title>
-    <style type="text/css">
-        body{
-            padding: 1em;
-            background: #2B3134;
-            color: #777;
-            text-align: center;
-            font-family: "Gill sans", sans-serif;
-            width: 80%;
-            margin: 0 auto;
-        }
-        h1{
-            margin: 1em 0;
-            border-bottom: 1px dashed;
-            padding-bottom: 1em;
-            font-weight: lighter;
-        }
-        p{
-            font-style: italic;
-        }
-        .loader{
-            margin: 0 0 2em;
-            height: 100px;
-            width: 20%;
-            text-align: center;
-            padding: 1em;
-            margin: 0 auto 1em;
-            display: inline-block;
-            vertical-align: top;
-        }
+    <title>样式化checkbox、radio</title>
+    <style>
+        * { margin: 0; padding: 0 }
+        .box { width: 320px; margin: 20px auto; text-align: center; }
+        label { cursor: pointer;}
+        label.radio-sex {  display: inline-flex;  align-items: center;  white-space: nowrap;  vertical-align: middle; margin-right: 10px;}
+        label.radio-sex > span { margin-left: 10px;}
+        .content { width: 80%; min-width: 320px; margin: 0 auto;}
+        .content p{ line-height: 30px}
 
-        /*
-          Set the color of the icon
-        */
-        svg path,
-        svg rect{
-            fill: #FF6700;
-        }
+
+        /**** checkbox ****/
+        .checkbox{  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
+        .checkbox > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; background-color: #bdc3c7; text-align: center }
+        .checkbox > .icon > .icon-checked { opacity: 0; color: #fff; }
+        .checkbox > input[type=checkbox] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
+        .checkbox > input[type=checkbox]:hover + .icon > .icon-checked {  opacity: 1 }
+        .checkbox > input[type=checkbox]:checked + .icon { background-color: #1abc9c; }
+        .checkbox > input[type=checkbox]:checked + .icon > .icon-checked {  opacity: 1 }
+
+
+        /**** radio ****/
+        .radio {  width: 20px;  height: 20px; display: inline-block; position: relative; overflow: hidden; }
+        .radio > .icon { width: 20px; height: 20px; position: relative; display: block; box-sizing: border-box; border: 3px solid #bdc3c7; border-radius: 50%;}
+        .radio > .icon::after { content: ''; display: none; position: absolute; width: 8px; height: 8px; border-radius: 50%; background-color: #bdc3c7; top: 3px; left: 3px;}
+        .radio > input[type=radio] {  width: 100%; height: 100%; left: 0; top: 0; opacity: 0; position: absolute; z-index: 2; cursor: pointer; }
+        .radio > input[type=radio]:hover + .icon::after { display: block; }
+        .radio > input[type=radio]:checked + .icon { border-color: #1abc9c }
+        .radio > input[type=radio]:checked + .icon::after { display: block; background-color: #1abc9c }
+
+
+        /**** toggle ****/
+        .toggle {  display: inline-block;  overflow: hidden;  width: 60px;  height: 40px;  border-radius: 100px;  background-color: #bdc3c7;  box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05); position: relative }
+        .toggle > input[type=checkbox] {position: absolute;  display: block;  cursor: pointer;  top: 0;  left: 0;  width: 100%;  height: 100%;  opacity: 0;  z-index: 6;}
+        .toggle > span { display: block; position: absolute;}
+        .toggle .switch {  left: 2px;  top: 2px;  bottom: 2px;  right: 22px;  background-color: #fff;  border-radius: 36px;  z-index: 1;  transition: .35s cubic-bezier(0.785, 0.135, 0.150, 0.860);  transition-property: left, right;  transition-delay: 0s, .05s;  box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+        .toggle .track {  left: 0;  top: 0;  right: 0;  bottom: 0;  transition: .35s cubic-bezier(0.785, 0.135, 0.150, 0.860);  box-shadow: inset 0 0 0 2px rgba(0,0,0,.05);  border-radius: 40px;  }
+        .toggle > input[type=checkbox]:checked ~ .switch { right: 2px;  left: 22px; }
+        .toggle > input[type=checkbox]:checked ~ .track { box-shadow: inset 0 0 0 20px #1abc9c; }
+
+
+        /**** switch *****/
+        .toggle2 { display: inline-block;  overflow: hidden; height: 30px; width: 80px; background-color: #bdc3c7;  box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05); position: relative;  border-radius: 60px;  color: #fff;  zoom: 1;  transition: 0.25s;}
+        .toggle2 > label { display: block;  font-weight: 700;  height: 30px; line-height: 30px; width: 80px;  position: absolute;  text-align: center;  z-index: 2; box-sizing: border-box; top: 0; left: 0; }
+        .toggle2  label::after { display: block; content: ''; width: 22px; height: 22px; border-radius: 50%; position: absolute; top: 4px; }
+        .toggle2  label.switch-on { background-color: #34495e; padding-right: 16px; }
+        .toggle2  label.switch-on::after { background-color: #1abc9c; right: 4px; }
+        .toggle2  label.switch-off { background-color: #cbd2d8; padding-left: 16px; }
+        .toggle2  label.switch-off::after { background-color: #7F8C97; left: 4px; }
+        .toggle2 > input[type=radio]:checked + .switch-on { left: -80px;}
+        .toggle2 > input[type=radio]:checked + .switch-off { left: 80px;}
+
     </style>
 </head>
 <body>
 
-<h1>SVG Loading Images</h1>
 
-<!-- 1 -->
-<div class="loader loader--style1" title="0">
-    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-   width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
-  <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
-    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
-    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
-  <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
-    C22.32,8.481,24.301,9.057,26.013,10.047z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 20 20"
-      to="360 20 20"
-      dur="0.5s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
+<div class="box">
+    <label class="radio-sex" for="">
+        <div class="checkbox">
+            <input type="checkbox">
+            <div class="icon">
+                <span class="icon-checked">√</span>
+            </div>
+        </div>
+        <span>电影</span>
+    </label>
+
+    <label class="radio-sex">
+        <div class="checkbox">
+            <input type="checkbox" checked>
+            <div class="icon">
+                <span class="icon-checked">√</span>
+            </div>
+        </div>
+        <span>音乐</span>
+    </label>
 </div>
 
-<!-- 2 -->
-<div class="loader loader--style2" title="1">
-    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-  <path fill="#000" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 25 25"
-      to="360 25 25"
-      dur="0.6s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
+<div class="box">
+    <label class="radio-sex">
+        <div class="radio">
+            <input type="radio" name="sex" checked id="sex-0">
+            <span class="icon"></span>
+        </div>
+        <span> 男 </span>
+    </label>
+    <label class="radio-sex">
+        <div class="radio">
+            <input type="radio" name="sex" id="sex-1">
+            <span class="icon"></span>
+        </div>
+        <span> 女 </span>
+    </label>
 </div>
 
-<!-- 3  -->
-<div class="loader loader--style3" title="2">
-    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-  <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 25 25"
-      to="360 25 25"
-      dur="0.6s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
+<div class="content">
+    <p>用纯css实现 checkbox 、radio 样式化，主要通过改变 input:checked + 兄弟元素 的样式。</p>
+    <p>改变input checked状态（点击）有2种实现 </p>
+    <p style="text-indent: 30px;">1.input元素浮动在最上层opacity=0，直接点击在input元素上，其大小刚好是整块大小</p>
+    <p style="text-indent: 30px;">2.通过点击父层的label元素，需指定input的id，label间接改变input的checked</p>
+    <p>个人习惯用第一种，不需要设置一一对应的id（可在最外层决定是否加label）；但第二种较有语义，大多UI组件库采用</p>
+    <p> label 元素 没有for属性时 默认指定子元素第一个input（如：点击上面文字音乐），有for属性必须指明input的id （如：点击上面文字电影无效）</p>
+
 </div>
 
-<!-- 4 -->
-<div class="loader loader--style4" title="3">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="24px" height="24px" viewBox="0 0 24 24" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-    <rect x="0" y="0" width="4" height="7" fill="#333">
-      <animateTransform  attributeType="xml"
-        attributeName="transform" type="scale"
-        values="1,1; 1,3; 1,1"
-        begin="0s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
 
-    <rect x="10" y="0" width="4" height="7" fill="#333">
-      <animateTransform  attributeType="xml"
-        attributeName="transform" type="scale"
-        values="1,1; 1,3; 1,1"
-        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="20" y="0" width="4" height="7" fill="#333">
-      <animateTransform  attributeType="xml"
-        attributeName="transform" type="scale"
-        values="1,1; 1,3; 1,1"
-        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-  </svg>
+<div class="box">
+
+    <div class="toggle">
+        <input type="checkbox">
+        <span class="switch"></span>
+        <span class="track"></span>
+    </div>
+
+    <div class="toggle2">
+        <input type="radio" name="switch" id="switch-on">
+        <label class="switch-on" for="switch-on">ON</label>
+        <input type="radio" name="switch" id="switch-off">
+        <label class="switch-off" for="switch-off">OFF</label>
+    </div>
 </div>
 
-<!-- 5 -->
-<div class="loader loader--style5" title="4">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-    <rect x="0" y="0" width="4" height="10" fill="#333">
-      <animateTransform attributeType="xml"
-        attributeName="transform" type="translate"
-        values="0 0; 0 20; 0 0"
-        begin="0" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="10" y="0" width="4" height="10" fill="#333">
-      <animateTransform attributeType="xml"
-        attributeName="transform" type="translate"
-        values="0 0; 0 20; 0 0"
-        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="20" y="0" width="4" height="10" fill="#333">
-      <animateTransform attributeType="xml"
-        attributeName="transform" type="translate"
-        values="0 0; 0 20; 0 0"
-        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-  </svg>
+<div class="content">
+    <p>chckbox 、 radio 也可以开关形式呈现，原理跟上面一样。可以增加css3 transition 过度效果</p>
+    <p> radio 配合 label元素 和 js 可以达到更好效果，缓解css多层关系 </p>
 </div>
 
-<!-- 6 -->
-<div class="loader loader--style6" title="5">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-    <rect x="0" y="13" width="4" height="5" fill="#333">
-      <animate attributeName="height" attributeType="XML"
-        values="5;21;5"
-        begin="0s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML"
-        values="13; 5; 13"
-        begin="0s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="10" y="13" width="4" height="5" fill="#333">
-      <animate attributeName="height" attributeType="XML"
-        values="5;21;5"
-        begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML"
-        values="13; 5; 13"
-        begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="20" y="13" width="4" height="5" fill="#333">
-      <animate attributeName="height" attributeType="XML"
-        values="5;21;5"
-        begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML"
-        values="13; 5; 13"
-        begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-  </svg>
-</div>
-
-<!-- 7 -->
-<div class="loader loader--style7" title="6">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-    <rect x="0" y="0" width="4" height="20" fill="#333">
-      <animate attributeName="opacity" attributeType="XML"
-        values="1; .2; 1"
-        begin="0s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="7" y="0" width="4" height="20" fill="#333">
-      <animate attributeName="opacity" attributeType="XML"
-        values="1; .2; 1"
-        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="14" y="0" width="4" height="20" fill="#333">
-      <animate attributeName="opacity" attributeType="XML"
-        values="1; .2; 1"
-        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-  </svg>
-</div>
-
-<!-- 8 -->
-<div class="loader loader--style8" title="7">
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-    <rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">
-      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="8" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-    <rect x="16" y="10" width="4" height="10" fill="#333"  opacity="0.2">
-      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-    </rect>
-  </svg>
-</div>
 
 </body>
 </html>

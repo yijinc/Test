@@ -2,61 +2,107 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>css3 圆环进度效果</title>
-	<style>
-		* { margin: 0; padding: 0; font-family: "PingFang SC","Lantinghei SC","Microsoft YaHei","黑体",arial,sans-serif,tahoma;}
-		.container { min-width: 320px; margin: 0 auto; text-align: center}
-
-		.progress { width: 200px; height: 200px; margin: 50px auto; position: relative;}
-		.progress .left, .progress .right { width: 50%; height: 100%; position: relative; float: left; overflow: hidden;}
-		.progress .left .semicircle, .progress .right .semicircle { width: 100%; height: 100%; position: absolute; box-sizing: border-box;  transform: rotate(180deg); border: #ff80ab solid 30px; }
-		.progress .left .semicircle{  border-radius: 200px 0 0 200px; transform-origin: right center; border-right: none; }
-		.progress .right .semicircle { border-radius: 0 200px 200px 0; transform-origin: left center; border-left: none;}
-
-		.progress::after { display: block; content: attr(title); position: absolute; top: 50px; right: 50px; bottom: 50px; left: 50px; font: italic bold 50px/100px arial; color: #2C3E50;}
-	</style>
+	<title>利用rotate、translate 属性画立方体</title>
+<style type="text/css">
+	.wrap {
+		margin: 100px auto;
+		perspective: 800px;
+	}
+	.left, .right {
+		width: 50%;
+		height: 200px;
+		background-color: #ddd;
+		float: left;
+		text-align: center;
+		line-height: 200px;
+		color: #666;
+	}
+	.left:hover ~ .box {
+		transform: rotateX(360deg);
+	}
+	.right:hover ~ .box {
+		transform: rotateY(360deg);
+	}
+	.box {
+		margin: 0 auto;
+		width: 200px;
+		height: 200px;
+		position: relative;
+		transform-style: preserve-3d;
+		transform-origin: center center -100px;
+		transition: 4s all;
+	}
+	.box > div {
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		font-size: 100px;
+		text-align: center;
+		line-height: 200px;
+		color: white;
+	}
+	.box > div:nth-of-type(1) {
+		background-color: red;
+		top: -200px;
+		left: 0;
+		transform-origin: bottom;
+		transform: rotateX(90deg);
+	}
+	.box > div:nth-of-type(2) {
+		background-color: blue;
+		top: 0;
+		left: -200px;
+		transform-origin: right;
+		transform: rotateY(-90deg);
+	}
+	.box > div:nth-of-type(3) {
+		background-color: green;
+		top: 0;
+		left: 0;
+	}
+	.box > div:nth-of-type(4) {
+		background-color: yellow;
+		top: 0;
+		left: 200px;
+		transform-origin: left;
+		transform: rotateY(90deg);
+	}
+	.box > div:nth-of-type(5) {
+		background-color: pink;
+		top: 200px;
+		left: 0;
+		transform-origin: top;
+		transform: rotateX(-90deg);
+	}
+	.box > div:nth-of-type(6) {
+		background-color: orange;
+		top: 0;
+		left: 0;
+		transform: translateZ(-200px);
+	}
+	p {
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+	}
+</style>
 </head>
 <body>
-<div class="container">
 
-	<div class="progress" title="123">
-		<div class="left">
-			<div class="semicircle" id="leftCircle"></div>
-		</div>
-		<div class="right">
-			<div class="semicircle" id="rightCircle"></div>
-		</div>
+<div class="wrap">
+	<div class="left"> rotateX(360deg) </div>
+	<div class="right"> rotateY(360deg) </div>
+	<div class="box">
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+		<div>4</div>
+		<div>5</div>
+		<div>6</div>
 	</div>
-
 </div>
 
-<script>
-	window.onload = function () {
+<p> ps: 画出6个面，先布局出立方体平面图，根据 transform-origin 旋转变换位置构成立方体   </p>
 
-	    var x = 0;
-	    var lc = document.getElementById('leftCircle');
-        var rc = document.getElementById('rightCircle');
-
-		setInterval( rotate, 20);
-		
-		function rotate() {
-
-		    if(x>=360) {
-		        x=0;
-                lc.style = rc.style = 'transform: rotate(180deg)';
-			}
-
-			if(x>180) {
-                lc.style = 'transform: rotate(' + x +'deg)';
-			} else {
-                rc.style = 'transform: rotate(' + (180+x) +'deg)';
-			}
-
-			document.querySelector('.progress').title = x;
-
-            x++;
-        }
-    }
-</script>
 </body>
 </html>

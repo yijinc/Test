@@ -2,56 +2,51 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>左右div宽度自适应</title>
-	<style>
-		body{ font-family: Microsoft YaHei; font-size: 16px;}
-		.container{ width:900px; margin: 0 auto; }
-    	.box{ width: 900px; height: 60px; line-height: 60px; margin: 0 auto;}
-    	.left{ border: 1px solid #CBD2D8; float: left; border-radius: 4px; padding: 0 10px;height: 60px; max-width: 568px; overflow: hidden;}
-    	.bfc { height: 60px; overflow: hidden; border-top-right-radius: 4px; border-bottom-right-radius: 4px;}
-    	.right{ display: inline-block; margin-left: 10px; background-color: #2C3E50;border-top-left-radius: 4px; border-bottom-left-radius: 4px;}
+	<title>网页换肤</title>
+	<link rel="stylesheet" href="red.css" type="text/css">
+	<script>
+        window.onload = function ()
+        {
+            var oLink = document.getElementsByTagName("link")[0];
+            var oSkin = document.getElementById("skin").getElementsByTagName("li");
 
-    	.nav{ list-style: none; width: 900px; margin: 0; padding: 0; }
-    	.nav:after{ display: block;content: ''; clear: both; }
-    	.nav li{ float: left; }
-    	.nav li a{ text-decoration: none; font-size: 16px; color: #fff; padding: 20px;}
-    	.nav li a:hover{ color: #1ABC9C }
+            for(var i = 0; i< oSkin.length; i++)
+            {
+                oSkin[i].onclick = function ()
+                {
+                    for(var p in oSkin) oSkin[p].className = "";
+                    this.className = "current";
+                    oLink['href'] = this.id + ".css";
+                }
+            }
 
-
-		p{margin-top: 100px;}
-    	input{ width: 300px; height: 34px; border-radius: 4px; padding: 0 8px;}
-	</style>
+        };
+	</script>
 </head>
 <body>
 
-<div class="container">
-	<h1>利用bfc：右边盒子触发bfc，使其不与浮动盒子区域重叠，因此会重新计算宽度。</h1>
+<header class="top">
+	<div class="container">
+		<ul class="nav">
+			<li><a href="#">游戏</a></li>
+			<li><a href="#">娱乐</a></li>
+			<li><a href="#">体育</a></li>
+			<li><a href="#">电影</a></li>
+			<li><a href="#">音乐</a></li>
+			<li><a href="#">旅游</a></li>
+			<li><a href="#">小说</a></li>
+		</ul>
+		<ul class="menu" id="skin">
+			<li id="red" title="红色" class="current">红</li>
+			<li id="green" title="绿色">绿</li>
+			<li id="black" title="黑色">黑</li>
+		</ul>
 
-	<div class="box">
-	    <div class="left" id="name">
-	        我是自适应宽度盒子 
-	    </div>
-	    <div class="bfc">
-	        <div class="right">
-	            <ul class="nav">
-	            	<li><a href="https://yijinc.github.io/home">导航001</a></li>
-	            	<li><a href="https://yijinc.github.io/home">导航002</a></li>
-	            	<li><a href="https://yijinc.github.io/home">导航003</a></li>
-	            </ul>
-	        </div>
-	    </div>
 	</div>
-
-
-	<p>在下列输入框输入内容改变标题</p>
-	<input type="text" id="inputText" value="我是自适应宽度盒子" placeholder="输入内容显示在导航上" maxlength="130">
-
+</header>
+<div class="container">
+	<h1>这是正文...</h1>
 </div>
-	<script>
-		document.getElementById("inputText").onkeyup = function(){
-			var text = this.value;
-			document.getElementById('name').innerHTML = text;
-		}
-	</script>
+
 </body>
 </html>
