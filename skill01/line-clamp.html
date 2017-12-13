@@ -13,6 +13,7 @@
 		h3 {
 			font-size: 16px;
 			font-weight: 500;
+			color: #4c48ff;
 		}
 
 		p {
@@ -56,6 +57,11 @@
 			background: #fff;
 		}
 
+		.iellipsis { zoom:1; }
+		.iellipsis:after { clear: both; display: block; content: '' }
+		.iellipsis .text { float: left; overflow: hidden; height: 1.5em; margin-right: 2em; }
+		.iellipsis .dot { float: right; width: 2em; height: 1.5em; margin-top: -1.5em }
+
 
 	</style>
 </head>
@@ -81,9 +87,30 @@
 	<hr>
 
 	<h3>
+		兼容所有浏览器，也只适用于单行文字，而且最后一个字与...间隙随着宽度不一样
+	</h3>
+
+	<div class="iellipsis">
+		<div class="text">
+			今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
+			为什么会被狮子男拒绝呢，还不是因为你长得不好看，
+			为什么会被双鱼男拒绝呢，还不是因为你长得不好看，
+			为什么会被天蝎男拒绝呢，还不是因为你长得不好看，
+			为什么会被水瓶男拒绝呢，还不是因为你长得不好看，
+			　　为什么这么久都没有对象呢，还不是因为你长得不好看，
+			　　为什么告白他都无动于衷呢，还不是因为你长得不好看，
+			　　为什么借口总是没有感觉呢，还不是因为你长得不好看，
+			　　为什么你还没有彻底觉悟呢，一切都是因为你长得不好
+		</div>
+		<div class="dot">…</div>
+	</div>
+
+	<hr>
+
+	<h3>
 		-webkit-line-clamp: 2
 		<br>
-		用来限制在一个块元素显示的文本的行数
+		多行文字溢出，适用于Chrome、Safari、移动端
 	</h3>
 	<p class="clamp">
 		今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
@@ -100,7 +127,7 @@
 	<hr>
 
 
-	<h3>如果需要兼容ie老浏览器，可以在尾部加个固定'...'元素，这个方法有可能最后一个字被截了一半</h3>
+	<h3>如果需要兼容ie老浏览器，可以在尾部加个固定'...'元素，<span style="color:red">这个方法有可能最后一个字被截了一半</span></h3>
 	<p class="fade">
 		今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
 		为什么会被狮子男拒绝呢，还不是因为你长得不好看，
