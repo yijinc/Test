@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文字超出...显示</title>
+	<style type="text/css">
+		.wrap {
+			max-width: 900px;
+			margin: 20px auto;
+		}
+
+		.ellipsis {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.clamp {
+			overflow : hidden;
+			text-overflow: ellipsis;
+			-webkit-line-clamp: 2;
+			/* 以下2个属性是必需的 */
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+		}
+
+		.fade {
+			position: relative;
+			line-height: 1.5em;
+			/* 必须设置高度 3em = lineHeight * 2（2行） */
+			height: 3em;
+			overflow: hidden;
+		}
+		.fade:after {
+			content:"...";
+			position:absolute;
+			bottom:0;
+			right:0;
+			padding-right:14px;
+			background: #fff;
+		}
+
+
+	</style>
+</head>
+<body>
+<div class="wrap">
+	<h3>
+		text-overflow:ellipsis
+		<br>
+		用于 单行文本的溢出显示省略号
+	</h3>
+	<p class="ellipsis">
+		今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
+		为什么会被狮子男拒绝呢，还不是因为你长得不好看，
+		为什么会被双鱼男拒绝呢，还不是因为你长得不好看，
+		为什么会被天蝎男拒绝呢，还不是因为你长得不好看，
+		为什么会被水瓶男拒绝呢，还不是因为你长得不好看，
+	　　为什么这么久都没有对象呢，还不是因为你长得不好看，
+	　　为什么告白他都无动于衷呢，还不是因为你长得不好看，
+	　　为什么借口总是没有感觉呢，还不是因为你长得不好看，
+	　　为什么你还没有彻底觉悟呢，一切都是因为你长得不好
+	</p>
+
+	<hr>
+
+	<h3>
+		-webkit-line-clamp: 2
+		<br>
+		用来限制在一个块元素显示的文本的行数
+	</h3>
+	<p class="clamp">
+		今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
+		为什么会被狮子男拒绝呢，还不是因为你长得不好看，
+		为什么会被双鱼男拒绝呢，还不是因为你长得不好看，
+		为什么会被天蝎男拒绝呢，还不是因为你长得不好看，
+		为什么会被水瓶男拒绝呢，还不是因为你长得不好看，
+	　　为什么这么久都没有对象呢，还不是因为你长得不好看，
+	　　为什么告白他都无动于衷呢，还不是因为你长得不好看，
+	　　为什么借口总是没有感觉呢，还不是因为你长得不好看，
+	　　为什么你还没有彻底觉悟呢，一切都是因为你长得不好
+	</p>
+
+	<hr>
+
+
+	<h3>如果需要兼容ie老浏览器，可以在尾部加个固定'...'元素，这个方法有可能最后一个字被截了一半</h3>
+	<p class="fade">
+		今天我要给大家讲一个悲伤的故事，相信大家听完之后都会有所领悟，
+		为什么会被狮子男拒绝呢，还不是因为你长得不好看，
+		为什么会被双鱼男拒绝呢，还不是因为你长得不好看，
+		为什么会被天蝎男拒绝呢，还不是因为你长得不好看，
+		为什么会被水瓶男拒绝呢，还不是因为你长得不好看，
+		　　为什么这么久都没有对象呢，还不是因为你长得不好看，
+		　　为什么告白他都无动于衷呢，还不是因为你长得不好看，
+		　　为什么借口总是没有感觉呢，还不是因为你长得不好看，
+		　　为什么你还没有彻底觉悟呢，一切都是因为你长得不好
+	</p>
+
+	<br>
+
+	<h3>JavaScript 方案</h3>
+	<p><a href="https://github.com/josephschmitt/Clamp.js">Clamp.js</a></p>
+	<p><a href="https://github.com/FrDH/jQuery.dotdotdot">jQuery.dotdotdot</a></p>
+</div>
+</body>
+</html>
