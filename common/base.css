@@ -17,6 +17,41 @@ pre {
 .container {
     margin-right: auto;
     margin-left: auto;
+	max-width: 500px;
+}
+
+ol {
+	border: 12px solid #eee;
+	border-radius: 10px;
+	padding: 6px;
+	list-style-type: decimal;
+	list-style-position: inside;
+	color: #fff;
+	margin: 20px auto;
+}
+ol li {
+	background-color: #9C0;
+	line-height: 42px;
+	/*font: 12px/25px Tahoma;*/
+	padding-left: 15px;
+	border-bottom: 1px solid #FFF;
+}
+ol:last-of-type li {
+	background-color: #5cb;
+}
+ol li a {
+	text-decoration: none;
+	color: #fff;
+}
+
+footer {
+	text-align: center;
+	color: #ddd;
+	font: 12px/25px Tahoma;
+}
+footer a {
+	color: #ddd;
+	text-decoration: none;
 }
 
 
@@ -25,27 +60,3 @@ pre {
 
 
 
-
-
-
-
-
-
-
-@media (min-width: 768px) {
-	.container {
-    	width: 750px;
-	}
-}
-
-@media (min-width: 992px) {
-	.container {
-    	width: 970px;
-	}
-}
-
-@media (min-width: 1200px) {
-	.container {
-    	width: 1170px;
-	}
-}
