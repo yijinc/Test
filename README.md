@@ -1,12 +1,24 @@
 # csskill
-> 一些关于css的小技巧和小玩具
+> 一些关于css和javascript的学习小例子
 
-### Index
-- [使用hover属性](https://yijinc.github.io/csskill/skill01/index.html)
-- [图片垂直居中](https://yijinc.github.io/csskill/skill02/index.html)
-- [网页换肤](https://yijinc.github.io/csskill/skill03/index.html)
-- [左右div宽度自适应](https://yijinc.github.io/csskill/skill04/index.html)
-- [radio元素样式化](https://yijinc.github.io/csskill/skill05/index.html)
-- [SVG图像实现的加载效果](https://yijinc.github.io/csskill/skill06/index.html)
-- [利用rotate、translate 属性画立方体](https://yijinc.github.io/csskill/skill07/index.html)
-- [css3 圆环进度效果](https://yijinc.github.io/csskill/skill08/index.html)
+## CSS Index
+- [使用hover属性](https://yijinc.github.io/learn/css01/index.html)
+- [文字超出...显示](https://yijinc.github.io/learn/css01/line-clamp.html)
+- [图片垂直居中](https://yijinc.github.io/learn/css02/index.html)
+- [网页换肤](https://yijinc.github.io/learn/css03/index.html)
+- [左右div宽度自适应](https://yijinc.github.io/learn/css04/index.html)
+- [radio元素样式化](https://yijinc.github.io/learn/css05/index.html)
+- [SVG图像实现的加载效果](https://yijinc.github.io/learn/css06/index.html)
+- [利用rotate、translate 属性画立方体](https://yijinc.github.io/learn/css07/index.html)
+- [css3 圆环进度效果](https://yijinc.github.io/learn/css08/index.html)
+
+## Javascript Index
+- [使用hover属性](https://yijinc.github.io/learn/css01/index.html)
+- [文字超出...显示](https://yijinc.github.io/learn/css01/line-clamp.html)
+- [图片垂直居中](https://yijinc.github.io/learn/css02/index.html)
+- [网页换肤](https://yijinc.github.io/learn/css03/index.html)
+- [左右div宽度自适应](https://yijinc.github.io/learn/css04/index.html)
+- [radio元素样式化](https://yijinc.github.io/learn/css05/index.html)
+- [SVG图像实现的加载效果](https://yijinc.github.io/learn/css06/index.html)
+- [利用rotate、translate 属性画立方体](https://yijinc.github.io/learn/css07/index.html)
+- [css3 圆环进度效果](https://yijinc.github.io/learn/css08/index.html)
