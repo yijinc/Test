@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>滚动事件 - 监听滚动 scrollTop值 做处理</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+	<style>
+		* { margin: 0; padding: 0; }
+		.header { position: fixed; height: 240px; overflow: hidden; background: red; width: 100%; z-index: 99; transition: height ease .3s }
+		.header.zoom{ height: 50px;}
+		.header .top { height: 50px; line-height: 50px; overflow: hidden; }
+		.header .top>h2 { opacity: 0; transition: opacity .2s ease 0s }
+		.header.zoom .top>h2 { opacity: 1 }
+		.content { position: relative; top: 240px; transition: top ease .3s}
+		.content.zoom { top: 50px;}
+		#loading { padding: 30px; position: absolute; bottom: 0; left: 0; width: 100%; color: #fff; text-align: center}
+	</style>
+</head>
+<body>
+
+<div id="header" class="header">
+	<div class="top">
+		<h2>简称标题</h2>
+		<span class="icon">返回</span>
+	</div>
+	<h1>头部大标题</h1>
+</div>
+<div id="content" class="content">
+	<div id="loading"> 加载中...</div>
+</div>
+
+<script>
+	window.onload = function () {
+		var header = document.getElementById("header");
+		var content = document.getElementById("content");
+		var loading = document.getElementById("loading");
+
+        fetchData();
+
+		document.addEventListener("scroll", function (e) {
+			var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+			if (scrollTop>=1) {
+			    header.className = "header zoom";
+			    content.className = "content zoom";
+			} else {
+                header.className = "header";
+                content.className = "content";
+			}
+			//滚动到浏览器底部
+			if (scrollTop+document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+			    if(loading.style.display === "block") {
+			        return;
+			    }
+                loading.style.display = "block";
+			    setTimeout(fetchData, 2000);
+			}
+        });
+
+		function fetchData() {
+            for( var i=0; i<5; i++) {
+                var oDiv = document.createElement("div");
+                oDiv.style.backgroundColor = getRandomColor();
+                oDiv.style.height = randomRange(100, 300) + 'px';
+                content.appendChild(oDiv);
+            }
+            loading.style.display = "none";
+        }
+
+        function randomRange(lower, upper) {
+            return Math.floor(Math.random() * (upper - lower + 1) + lower)
+        }
+        function getRandomColor() {
+            var str = randomRange(0, 0xF0F0F0).toString(16);
+            while(str.length < 6) str = "0" + str;
+            return "#" + str
+        }
+
+    };
+</script>
+
+</body>
+</html>

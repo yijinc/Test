@@ -13,7 +13,7 @@
 - [css3 圆环进度效果](https://yijinc.github.io/learn/css08/index.html)
 
 ## Javascript Index
-- [使用hover属性](https://yijinc.github.io/learn/css01/index.html)
+- [scroll event - 滚动事件](https://yijinc.github.io/learn/js05/scroll-event.html)
 - [文字超出...显示](https://yijinc.github.io/learn/css01/line-clamp.html)
 - [图片垂直居中](https://yijinc.github.io/learn/css02/index.html)
 - [网页换肤](https://yijinc.github.io/learn/css03/index.html)
