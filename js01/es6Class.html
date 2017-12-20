@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+	<title>es6 class this 指向 </title>
+</head>
+<body>
+
+<button id="btn"> print name </button>
+
+<script>
+
+	const btn = document.getElementById('btn');
+
+    class Component {
+        constructor() {
+            this.name = "component";
+        }
+    }
+
+    class MyComponent extends Component {
+        constructor(props) {
+            super(props);
+            this.lastName = props.lastName;
+            this.printName = this.printName.bind(this); // 1 直接调用类中的方法或者将它绑定给其他事件,需要绑定this
+            this.apply();
+        }
+
+        printName() {
+            console.log(`Hello ${this.name}`);
+        }
+
+        apply() {
+
+            //事件绑定  this指向为该对象（btn）
+            btn.onclick = this.printName
+
+
+	        // 2 直接调用类中的方法或者将它绑定给其他事件, 使用箭头函数并将方法 触发写在函数内
+//	        btn.onclick = (e)=> {
+//                this.printName()
+//	        }
+
+        }
+
+    }
+
+    //
+    const component = new MyComponent({lastName: 'aaa'});
+    const { printName } = component;
+    console.log(component);
+    console.log(printName);
+
+    //printName 是 component 原型链上的方法，this 指向 component，正常打印
+    component.printName();
+
+	// 如果没有绑定this，报错 this 指向错误 -> undefined;
+    printName();
+
+</script>
+
+</body>
+</html>
