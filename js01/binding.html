@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>双向绑定</title>
+</head>
+<body onload="init()">
+
+<button ng-click="inc"> +1 </button>
+<button ng-click="inc2"> +2 </button>
+
+<p style="color: red" ng-bind="counter"></p>
+<p style="color: blue" ng-bind="counter"></p>
+<p style="color: green" ng-bind="counter"></p>
+
+<script type="text/javascript">
+	var counter = 0 ;
+
+	function inc() {
+		counter ++;
+    }
+    function inc2() {
+	    counter +=2;
+    }
+
+    function init() {
+	    bind();
+    }
+
+    function bind() {
+	    var list = document.querySelectorAll("[ng-click]");
+	    for (var i=0; i<list.length; i++) {
+	        list[i].onclick = (function (index) {
+		        return function () {
+			        window[list[index].getAttribute("ng-click")]();
+			        apply();
+                }
+            })(i)
+	    }
+    }
+
+    function apply() {
+	    var list = document.querySelectorAll("[ng-bind='counter']");
+	    for (var i=0; i<list.length; i++) {
+	        list[i].innerHTML = counter;
+	    }
+    }
+</script>
+</body>
+</html>
