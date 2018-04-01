@@ -3,35 +3,35 @@
  */
 
 /*请在下面数字中填写你关注过的大V的Id 改好了复制 粘贴到 浏览器的 console的*/
-const arr = ['96578', '143895', '11880', '3692', '9457', '177492', '71115', '21800'];
+var arr = ['96578', '143895', '11880', '3692', '9457', '177492', '71115', '21800'];
 
 function zanBigVPro(commentContent='', isComment=false) {
 
-    const record = {};
+    var record = {};
 
-    const reTryStore = {}; //失败后的重试
+    var reTryStore = {}; //失败后的重试
 
-    const api = {
+    var api = {
         list: "https://be02.bihu.com/bihube-pc/api/content/show/getFollowArtList",
         upVote: "https://be02.bihu.com/bihube-pc/api/content/upVote",
         comment: "https://be02.bihu.com/bihube-pc/api/content/createComment",
     };
 
-    let timer = null;
-    let totalUpVote = 0 ; //总共点赞
-    let requestCount = 0; //请求成功次数
-    let errorCount = 0; //请求失败次数
-    const advertise = decodeURIComponent('%E8%B4%AD%E4%B9%B0%E8%81%94%E7%B3%BB%E8%9C%9C%E8%9C%82%EF%BC%8C%E5%BE%AE%E4%BF%A1%EF%BC%9Ateo742695');
+    var timer = null;
+    var totalUpVote = 0 ; //总共点赞
+    var requestCount = 0; //请求成功次数
+    var errorCount = 0; //请求失败次数
+    var advertise = decodeURIComponent('%E8%B4%AD%E4%B9%B0%E8%81%94%E7%B3%BB%E8%9C%9C%E8%9C%82%EF%BC%8C%E5%BE%AE%E4%BF%A1%EF%BC%9Ateo742695');
 
 
-    const userInfo = JSON.parse(window.localStorage.getItem("ANDUI_BIHU_LOGININFO"));
+    var userInfo = JSON.parse(window.localStorage.getItem("ANDUI_BIHU_LOGININFO"));
     if(!userInfo) {
         alert("请先登录");
         console.info("您当前未登录");
     }
 
     // 引入jquery
-    const jqueryLib = document.createElement('script');
+    var jqueryLib = document.createElement('script');
     jqueryLib.src = 'https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js';
     document.querySelectorAll('body')[0].appendChild(jqueryLib);
     jqueryLib.onload = function() {
@@ -42,14 +42,14 @@ function zanBigVPro(commentContent='', isComment=false) {
 
 
     // 时间设置
-    const startDate = 1522544642548; // 开始时间
-    const usableTime = 60 * 60 * 24 * 1000 * 2; //可用时长 2天
-    const expireDate = startDate + usableTime; //到期日期 = 开始时间 + 可用时间
+    var startDate = 1522544642548; // 开始时间
+    var usableTime = 60 * 60 * 24 * 1000 * 2; //可用时长 2天
+    var expireDate = startDate + usableTime; //到期日期 = 开始时间 + 可用时间
 
 
-    const setRandomTime = (n) => parseInt(Math.random() * n * 1000);
+    var setRandomTime = (n) => parseInt(Math.random() * n * 1000);
 
-    const setComment = articleId => {
+    function setComment(articleId) {
         setTimeout(() => {
             $.ajax({
                 url: api.comment,
@@ -68,7 +68,7 @@ function zanBigVPro(commentContent='', isComment=false) {
         }, 3000)
     };
 
-    const setZan = (article) => {
+    function setZan(article) {
         $.ajax({
             url: api.upVote,
             type: 'post',
@@ -105,7 +105,7 @@ function zanBigVPro(commentContent='', isComment=false) {
     };
 
 
-    const isBigVNewArticle = artList => {
+    function isBigVNewArticle(artList) {
         artList.forEach( article => {
             arr.forEach( bigVId => {
                 if (bigVId==article.userId) {
@@ -122,12 +122,12 @@ function zanBigVPro(commentContent='', isComment=false) {
     };
 
 
-    const listPolling = () => {
-        if (new Date().getTime() > expireDate) { // 到期
-            alert("脚本到期 "+ advertise);
-            console.error("脚本到期 "+ advertise);
-            return
-        }
+    function listPolling()  {
+        // if (new Date().getTime() > expireDate) { // 到期
+        //     alert("脚本到期 "+ advertise);
+        //     console.error("脚本到期 "+ advertise);
+        //     return
+        // }
         timer = setInterval(() => {
             $.ajax({
                 url: api.list,
