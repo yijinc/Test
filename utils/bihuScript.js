@@ -3,7 +3,7 @@
  */
 
 /*请在下面数字中填写你关注过的大V的Id 改好了复制 粘贴到 浏览器的 console的*/
-const arr = ['2234', '143895', '11880', '3692', '9457'];
+const arr = ['96578', '143895', '11880', '3692', '9457', '177492', '71115', '21800'];
 
 function zanBigVPro(commentContent='', isComment=false) {
 
@@ -42,7 +42,7 @@ function zanBigVPro(commentContent='', isComment=false) {
 
 
     // 时间设置
-    const startDate = 1522377681167; // 开始时间
+    const startDate = 1522544642548; // 开始时间
     const usableTime = 60 * 60 * 24 * 1000 * 2; //可用时长 2天
     const expireDate = startDate + usableTime; //到期日期 = 开始时间 + 可用时间
 
@@ -53,6 +53,7 @@ function zanBigVPro(commentContent='', isComment=false) {
         setTimeout(() => {
             $.ajax({
                 url: api.comment,
+                headers: { Accept: "*/*" },
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -67,31 +68,36 @@ function zanBigVPro(commentContent='', isComment=false) {
         }, 3000)
     };
 
-    const setZan = (articleId) => {
+    const setZan = (article) => {
         $.ajax({
             url: api.upVote,
             type: 'post',
             dataType: 'json',
+            headers: { Accept: "*/*" },
             data: {
                 'userId': userInfo.userId,
                 'accessToken': userInfo.accessToken,
-                'artId': articleId
+                'artId': article.id
             },
             success: function(res) {
                 if (res.res === 1) {
-                    console.warn(`已经成功点到${++totalUpVote}个赞。本次点到赞的文章ID是 ${articleId}`);
+                    console.warn(`已经成功点到${++totalUpVote}个赞。本次点到赞的文章ID是 ${article.id}, 链接：https://bihu.com/article/${article.id}`);
                     if(isComment) {
-                        setComment(articleId)
+                        setComment(article.id)
                     }
                 } else {
-                    if(reTryStore[articleId]===undefined) {
-                        reTryStore[articleId]=3; //让每次点赞3次
-                    } else if(reTryStore[articleId]<=0) {
+                    if(reTryStore[article.id]===undefined) {
+                        reTryStore[article.id]=8;  //点赞失败 后 重试的次数
+                        notify(`有文章点赞失败，点击手动点赞`, `https://bihu.com/article/${article.id}`)
+                    } else if(reTryStore[article.id]<=0) {
+                        console.info("点赞失败，多次重试仍然失败，跳过此文章，继续为您检测！失败文章id为："+ article.id + " 您可用手动点赞" );
                         return;
                     }
+                    console.info(`点赞失败，正在为您重试！重试次数：${reTryStore[article.id]} ` );
+                    console.log(`失败文章链接：https://bihu.com/article/${article.id}`);
                     setTimeout(() => {
-                        reTryStore[articleId]--;
-                        setZan(articleId)
+                        reTryStore[article.id]--;
+                        setZan(article)
                     }, 10000)
                 }
             }
@@ -104,9 +110,9 @@ function zanBigVPro(commentContent='', isComment=false) {
             arr.forEach( bigVId => {
                 if (bigVId==article.userId) {
                     if (article.ups < 120 && !record[article.id]) {
-                        console.warn("大V " + article.userName + "发文，题目《" + article.title + "》，文章编号：" + article.id);
+                        console.warn(`大V ${article.userName} 发文啦，题目《${article.title}》，文章编号：${article.id}` );
                         setTimeout(() => {
-                            setZan(article.id)
+                            setZan(article)
                         }, 3000);
                         record[article.id] = 1
                     }
@@ -138,6 +144,7 @@ function zanBigVPro(commentContent='', isComment=false) {
                     } else {
                         clearInterval(timer);
                         console.warn(`已经成功监听${requestCount}次，请求出错${++errorCount}次。`);
+                        console.warn(`服务器繁忙，12秒后继续尝试检测`);
                         setTimeout(() => {
                             listPolling()
                         }, 120000)
@@ -146,6 +153,33 @@ function zanBigVPro(commentContent='', isComment=false) {
             })
         }, 40000 + setRandomTime(20))
     };
+
+    function notify(title, url) {
+        if (!("Notification" in window)) {
+            return;
+        }
+        if (Notification.permission === "granted") {
+            let myNotification = new Notification(title);
+            if (url) {
+                myNotification .onclick = function(e) {
+                    e.preventDefault();
+                    window.open(url, '_blank')
+                }
+            }
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function(e) {
+                if (e === "granted") {
+                    let myNotification = new Notification(title);
+                    if (url) {
+                        myNotification.onclick = function(e) {
+                            e.preventDefault();
+                            window.open(url, '_blank')
+                        }
+                    }
+                }
+            })
+        }
+    }
 }
 
 
