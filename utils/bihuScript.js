@@ -85,20 +85,20 @@ function zanBigVPro(commentContent='', isComment=false) {
             },
             success: function(res) {
                 if (res.res === 1) {
-                    console.warn(`已经成功点到${++totalUpVote}个赞。本次点到赞的文章ID是 ${article.id}, 链接：https://bihu.com/article/${article.id}`);
+                    console.warn("已经成功点到 "+(++totalUpVote)+" 个赞。本次点到赞的文章ID是 "+article.id+" , 链接：https://bihu.com/article/"+article.id);
                     if(isComment) {
                         setComment(article.id)
                     }
                 } else {
                     if(reTryStore[article.id]===undefined) {
                         reTryStore[article.id]=8;  //点赞失败 后 重试的次数
-                        notify(`有文章点赞失败，点击手动点赞`, `https://bihu.com/article/${article.id}`)
+                        notify("有文章点赞失败，点击手动点赞", "https://bihu.com/article/"+article.id)
                     } else if(reTryStore[article.id]<=0) {
                         console.info("点赞失败，多次重试仍然失败，跳过此文章，继续为您检测！失败文章id为："+ article.id + " 您可用手动点赞" );
                         return;
                     }
-                    console.info(`点赞失败，正在为您重试！重试次数：${reTryStore[article.id]} ` );
-                    console.log(`失败文章链接：https://bihu.com/article/${article.id}`);
+                    console.info("点赞失败，正在为您重试！重试次数："+reTryStore[article.id] );
+                    console.log("失败文章链接：https://bihu.com/article/"+article.id);
                     setTimeout(function() {
                         reTryStore[article.id]--;
                         setZan(article)
@@ -114,7 +114,7 @@ function zanBigVPro(commentContent='', isComment=false) {
             arr.forEach( function(bigVId) {
                 if (bigVId==article.userId) {
                     if (article.ups < 120 && !record[article.id]) {
-                        console.warn(`大V ${article.userName} 发文啦，题目《${article.title}》，文章编号：${article.id}` );
+                        console.warn("大V "+article.userName+ " 发文啦，题目《"+ article.title+ "》，文章编号："+ article.id );
                         setTimeout(function() {
                             setZan(article)
                         }, 3000);
@@ -144,11 +144,11 @@ function zanBigVPro(commentContent='', isComment=false) {
                 success: function(res) {
                     if (res.res === 1) {
                         isBigVNewArticle(res.data.artList.list);
-                        console.warn(`已经成功监听${++requestCount}次，请求出错${errorCount}次。`)
+                        console.warn("已经成功监听" + (++requestCount)+ "次，请求出错" + errorCount+ "次。")
                     } else {
                         clearInterval(timer);
-                        console.warn(`已经成功监听${requestCount}次，请求出错${++errorCount}次。`);
-                        console.warn(`服务器繁忙，12秒后继续尝试检测`);
+                        console.warn("已经成功监听"+requestCount+"次，请求出错"+(++errorCount)+"次");
+                        console.warn("服务器繁忙，12秒后继续尝试检测");
                         setTimeout(function() {
                             listPolling()
                         }, 120000)
