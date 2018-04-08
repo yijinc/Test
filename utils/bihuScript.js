@@ -22,11 +22,12 @@ function zanBigVPro(commentContent='', isComment=false) {
         comment: "https://be02.bihu.com/bihube-pc/api/content/createComment",
     };
 
-    let timer = null;
-    let totalUpVote = 0 ; //总共点赞
-    let requestCount = 0; //请求成功次数
-    let errorCount = 0; //请求失败次数
+    var timer = null;
+    var totalUpVote = 0 ; //总共点赞
+    var requestCount = 0; //请求成功次数
+    var errorCount = 0; //请求失败次数
     var advertise = decodeURIComponent('%E8%B4%AD%E4%B9%B0%E8%81%94%E7%B3%BB%E8%9C%9C%E8%9C%82%EF%BC%8C%E5%BE%AE%E4%BF%A1%EF%BC%9Ateo742695');
+    var service = decodeURIComponent('%E5%AE%A2%E6%9C%8D%EF%BC%9Acxj5377053');
     var provider = decodeURIComponent("%E6%89%93%E8%B5%8F%E4%BD%9C%E8%80%85%EF%BC%9Ahttps%3A%2F%2Fm.weibo.cn%2F3702496574%2F4224052040346429%20%EF%BC%88%E5%B0%86%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0");
 
     var userInfo = JSON.parse(window.localStorage.getItem("ANDUI_BIHU_LOGININFO"));
@@ -42,6 +43,7 @@ function zanBigVPro(commentContent='', isComment=false) {
     jqueryLib.onload = function() {
         alert(advertise);
         console.warn(advertise);
+        console.warn(service);
         console.info(provider);
         listPolling()
     };
@@ -173,7 +175,7 @@ function zanBigVPro(commentContent='', isComment=false) {
             return;
         }
         if (Notification.permission === "granted") {
-            let myNotification = new Notification(title);
+            var myNotification = new Notification(title);
             if (url) {
                 myNotification .onclick = function(e) {
                     e.preventDefault();
@@ -183,7 +185,7 @@ function zanBigVPro(commentContent='', isComment=false) {
         } else if (Notification.permission !== 'denied') {
             Notification.requestPermission(function(e) {
                 if (e === "granted") {
-                    let myNotification = new Notification(title);
+                    var myNotification = new Notification(title);
                     if (url) {
                         myNotification.onclick = function(e) {
                             e.preventDefault();
