@@ -4,11 +4,12 @@
 
 /***
  * 第二次使用 可能会有缓存，请强制刷新浏览器清除缓存
- *
  * 请在下面数字中填写你关注过的大V的Id 改好了复制 粘贴到 浏览器的 console的
  **/
 
-var arr = ['96578', '143895', '11880', '3692', '9457', '177492', '71115', '21800'];
+var arr = [2234, 9909, 483, 256409, 11880, 131507, 112225, 233279, 193646, 55332, 96578, 143895, 231155, 87858, 21800, 92598, 16340];
+/* 过滤(标题中的)敏感词汇，不点赞 */
+var sensitiveWord = ['机_器_人', '会删', '会_删'];
 
 function zanBigVPro(commentContent='', isComment=false) {
 
@@ -26,6 +27,7 @@ function zanBigVPro(commentContent='', isComment=false) {
     let requestCount = 0; //请求成功次数
     let errorCount = 0; //请求失败次数
     var advertise = decodeURIComponent('%E8%B4%AD%E4%B9%B0%E8%81%94%E7%B3%BB%E8%9C%9C%E8%9C%82%EF%BC%8C%E5%BE%AE%E4%BF%A1%EF%BC%9Ateo742695');
+    var provider = decodeURIComponent("%E6%89%93%E8%B5%8F%E4%BD%9C%E8%80%85%EF%BC%9Ahttps%3A%2F%2Fm.weibo.cn%2F3702496574%2F4224052040346429%20%EF%BC%88%E5%B0%86%E4%BC%9A%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0");
 
     var userInfo = JSON.parse(window.localStorage.getItem("ANDUI_BIHU_LOGININFO"));
     if(!userInfo) {
@@ -40,7 +42,7 @@ function zanBigVPro(commentContent='', isComment=false) {
     jqueryLib.onload = function() {
         alert(advertise);
         console.warn(advertise);
-        console.info("打赏作者：https://m.weibo.cn/3702496574/4224052040346429 （将会持续更新");
+        console.info(provider);
         listPolling()
     };
 
@@ -89,6 +91,8 @@ function zanBigVPro(commentContent='', isComment=false) {
                     if(isComment) {
                         setComment(article.id)
                     }
+                } else if(res.resMsg==="已投过票了。") {
+                    console.info("您已经赞过了，文章链接：https://bihu.com/article/"+article.id)
                 } else {
                     if(reTryStore[article.id]===undefined) {
                         reTryStore[article.id]=8;  //点赞失败 后 重试的次数
@@ -98,7 +102,7 @@ function zanBigVPro(commentContent='', isComment=false) {
                         return;
                     }
                     console.info("点赞失败，正在为您重试！重试次数："+reTryStore[article.id] );
-                    console.log("失败文章链接：https://bihu.com/article/"+article.id);
+                    console.info("失败文章链接：https://bihu.com/article/"+article.id);
                     setTimeout(function() {
                         reTryStore[article.id]--;
                         setZan(article)
@@ -113,7 +117,12 @@ function zanBigVPro(commentContent='', isComment=false) {
         artList.forEach(function(article) {
             arr.forEach( function(bigVId) {
                 if (bigVId==article.userId) {
-                    if (article.ups < 120 && !record[article.id]) {
+                    if (article.ups < 150 && !record[article.id]) {
+                        if(sensitiveFilter(article.title)){
+                            console.info("检测到绞杀机器人的文章啦，老子是不会点赞的");
+                            console.warn("大V "+article.userName+ " 发垃圾文章，题目《"+ article.title+ "》，文章编号："+ article.id );
+                            return;
+                        }
                         console.warn("大V "+article.userName+ " 发文啦，题目《"+ article.title+ "》，文章编号："+ article.id );
                         setTimeout(function() {
                             setZan(article)
@@ -135,6 +144,7 @@ function zanBigVPro(commentContent='', isComment=false) {
         timer = setInterval(function() {
             $.ajax({
                 url: api.list,
+                headers: { Accept: "*/*" },
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -183,6 +193,12 @@ function zanBigVPro(commentContent='', isComment=false) {
                 }
             })
         }
+    };
+
+    function sensitiveFilter(title) {
+        return sensitiveWord.some(function (key) {
+            return title.indexOf(key)>=0
+        })
     }
 }
 
