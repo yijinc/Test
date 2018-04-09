@@ -8,8 +8,6 @@
  **/
 
 var arr = [2234, 9909, 483, 256409, 11880, 131507, 112225, 233279, 193646, 55332, 96578, 143895, 231155, 87858, 21800, 92598, 16340];
-/* 过滤(标题中的)敏感词汇，不点赞 */
-var sensitiveWord = ['机_器_人', '会删', '会_删'];
 
 function zanBigVPro(commentContent='', isComment=false) {
 
@@ -20,6 +18,7 @@ function zanBigVPro(commentContent='', isComment=false) {
         list: "https://be02.bihu.com/bihube-pc/api/content/show/getFollowArtList",
         upVote: "https://be02.bihu.com/bihube-pc/api/content/upVote",
         comment: "https://be02.bihu.com/bihube-pc/api/content/createComment",
+        article: "https://be02.bihu.com/bihube-pc/api/content/show/getArticle"
     };
 
     var timer = null;
@@ -120,16 +119,19 @@ function zanBigVPro(commentContent='', isComment=false) {
             arr.forEach( function(bigVId) {
                 if (bigVId==article.userId) {
                     if (article.ups < 150 && !record[article.id]) {
-                        if(sensitiveFilter(article.title)){
-                            console.info("检测到绞杀机器人的文章啦，老子是不会点赞的");
-                            console.warn("大V "+article.userName+ " 发垃圾文章，题目《"+ article.title+ "》，文章编号："+ article.id );
-                            return;
-                        }
-                        console.warn("大V "+article.userName+ " 发文啦，题目《"+ article.title+ "》，文章编号："+ article.id );
-                        setTimeout(function() {
-                            setZan(article)
-                        }, 3000);
-                        record[article.id] = 1
+
+                        isArticle(article.id).then(function (flag) {
+                           if(flag) {
+                               console.warn("大V "+article.userName+ " 发文啦，题目《"+ article.title+ "》，文章编号："+ article.id );
+                               setTimeout(function() {
+                                   setZan(article)
+                               }, 3000);
+                               record[article.id] = 1
+                           } else {
+                               console.info("检测到绞杀机器人的文章啦，老子是不会点赞的");
+                               console.warn("大V "+article.userName+ " 发垃圾文章，题目《"+ article.title+ "》，文章编号："+ article.id );
+                           }
+                        });
                     }
                 }
             })
@@ -138,11 +140,7 @@ function zanBigVPro(commentContent='', isComment=false) {
 
 
     var listPolling = function() {
-        // if (new Date().getTime() > expireDate) { // 到期
-        //     alert("脚本到期 "+ advertise);
-        //     console.error("脚本到期 "+ advertise);
-        //     return
-        // }
+
         timer = setInterval(function() {
             $.ajax({
                 url: api.list,
@@ -197,9 +195,22 @@ function zanBigVPro(commentContent='', isComment=false) {
         }
     };
 
-    function sensitiveFilter(title) {
-        return sensitiveWord.some(function (key) {
-            return title.indexOf(key)>=0
+    function isArticle(articleId) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: api.article,
+                headers: { Accept: "*/*" },
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    'userId': userInfo.userId,
+                    'accessToken': userInfo.accessToken,
+                    'artId': articleId
+                },
+                success: function(res) {
+                    resolve(res.data.content.length>3000); // 内容大于3000
+                }
+            })
         })
     }
 }
