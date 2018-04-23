@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>克隆 拖拽 - mousedown - mousemove - mouseup 事件</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+	<style type="text/css">
+		*{margin: 0; padding: 0}
+		div{position: absolute; width: 100px; height: 100px; cursor: move; border: 1px solid #888; background: #000;}
+		#drag1{top:100px;left:100px;}
+		#drag2{top:100px;left:300px;}
+		#temp{opacity:0.3; filter:alpha(opacity=30);}
+	</style>
+	<script type="text/javascript">
+        var zIndex = 1;
+        window.onload = function ()
+        {
+            var oDrag1 = document.getElementById("drag1");
+            var oDrag2 = document.getElementById("drag2");
+            drag(oDrag1);
+            drag(oDrag2);
+        };
+        function drag(elem)
+        {
+            var disX = dixY = 0;
+
+            //鼠标按下, 开始拖拽
+            elem.onmousedown = function (event)
+            {
+                var event = event || window.event;
+                disX = event.clientX - this.offsetLeft;
+                disY = event.clientY - this.offsetTop;
+
+                var oTemp = document.createElement("div");
+                oTemp["id"] = "temp";
+                oTemp.style.left = this.currentStyle ? this.currentStyle["left"] : getComputedStyle(this, null)["left"];
+                oTemp.style.top = this.currentStyle ? this.currentStyle["top"] : getComputedStyle(this, null)["top"];
+                oTemp.style.zIndex = zIndex++;
+                document.body.appendChild(oTemp);
+
+                //拖拽开始
+                document.onmousemove = function (event)
+                {
+                    var event = event || window.event;
+                    var iL = event.clientX - disX;
+                    var iT = event.clientY - disY;
+                    var maxL = document.documentElement.clientWidth - elem.offsetWidth;
+                    var maxT = document.documentElement.clientHeight - elem.offsetHeight
+
+                    iL <= 0 && (iL = 0);
+                    iT <= 0 && (iT = 0);
+                    iL >= maxL && (iL = maxL);
+                    iT >= maxT && (iT = maxT);
+
+                    oTemp.style.left = iL + "px";
+                    oTemp.style.top = iT + "px";
+                    return false;
+                };
+
+                //鼠标释放, 结束拖拽
+                document.onmouseup = function ()
+                {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                    elem.style.left = oTemp.style.left;
+                    elem.style.top = oTemp.style.top;
+                    elem.style.zIndex = oTemp.style.zIndex;
+                    document.body.removeChild(oTemp);
+                    elem.releaseCapture && elem.releaseCapture()
+                };
+
+                this.setCapture && this.setCapture();
+                return false
+            }
+        }
+	</script>
+</head>
+<body>
+<div id="drag1"></div>
+<div id="drag2"></div>
+</body>
+</html>
