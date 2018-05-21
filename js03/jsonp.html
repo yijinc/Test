@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+
+<script>
+    fetch('http://m1-test.xiaojiang.me/background/competition?matchStatus=&page=1&pageSize=20') // 返回一个Promise对象
+        .then((res)=>{
+            console.log(res)
+        })
+        .then((res)=>{
+            console.log(res) // res是最终的结果
+        })
+</script>
+
+</body>
+</html>
