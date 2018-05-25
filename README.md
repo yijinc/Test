@@ -17,3 +17,4 @@
 - [字符串填充函数 - 工具](https://yijinc.github.io/learn/js03/padding-string.html)
 - [scroll event - 滚动事件](https://yijinc.github.io/learn/js05/scroll-event.html)
 - [拖拽drag - mousedown-move-up](https://yijinc.github.io/learn/js05/drag.html)
+- [class 的继承](https://yijinc.github.io/learn/js01/classExtends.html)
