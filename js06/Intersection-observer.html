@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Intersection Observer + padding 来实现无限下拉</title>
+  <style>
+    * {
+      margin: 0; padding: 0;
+    }
+    #scrollArea li {
+      list-style: none; height: 200px; display: flex; justify-content: center; align-items: center; font-size: 32px;
+    }
+    #scrollArea li:nth-of-type(2n) {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>使用Intersection Observer实现无限滚动</h1>
+    <p>参考</p>
+    <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Intersection_Observer_API">Intersection Observer API</a></p>
+    <p><a href="https://vueschool.io/articles/vuejs-tutorials/build-an-infinite-scroll-component-using-intersection-observer-api/">Build an Infinite Scroll component using Intersection Observer API</a></p>
+    <ul id="scrollArea">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <script>
+    var root = document.querySelector('#scrollArea');
+    var list = document.querySelectorAll('#scrollArea li');
+    var listSize = list.length;
+    var firstItem = list[0];
+    var lastItem = list[listSize - 1];
+    var itemDefaultHeight = 150;
+    
+    var render = (firstIndex) => {
+      list.forEach((item, index) => {
+        item.innerHTML = firstIndex + index;
+      });
+    };
+    render(0);
+
+
+    var domPosition = {
+      currentPaddingTop: 0,
+      currentPaddingBottom: 0,
+      topSentinelPreviousY: 0,
+      topSentinelPreviousRatio: 0,
+      bottomSentinelPreviousY: 0,
+      bottomSentinelPreviousRatio: 0,
+      currentIndex: 0
+    };
+
+    var getWindowFirstIndex = (isScrollDown) => {
+      var { currentIndex } = domPosition;
+
+      // 以全部容器内所有元素的一半作为增量
+      var increment = Math.floor(listSize / 2);
+
+      var firstIndex;
+
+      if (isScrollDown) {
+          firstIndex = currentIndex + increment;
+      } else {
+          firstIndex = currentIndex - increment;
+      }
+
+      if (firstIndex < 0) {
+          firstIndex = 0;
+      }
+
+      return firstIndex;
+    }
+
+    // 动态调整容器padding实现滚动
+    var adjustPaddings = (isScrollDown) => {
+      var { currentPaddingTop, currentPaddingBottom } = domPosition;
+      var newCurrentPaddingTop, newCurrentPaddingBottom;
+      var remPaddingsVal = itemDefaultHeight * (Math.floor(listSize / 2));
+
+      if (isScrollDown) {
+        newCurrentPaddingTop = currentPaddingTop + remPaddingsVal;
+        if (currentPaddingBottom === 0) {
+          newCurrentPaddingBottom = 0;
+        } else {
+          newCurrentPaddingBottom = currentPaddingBottom - remPaddingsVal;
+        }
+      } else {
+        newCurrentPaddingBottom = currentPaddingBottom + remPaddingsVal;
+
+        if (currentPaddingTop === 0) {
+          newCurrentPaddingTop = 0;
+        } else {
+          newCurrentPaddingTop = currentPaddingTop - remPaddingsVal;
+        }
+      }
+
+      root.style.paddingBottom = `${newCurrentPaddingBottom}px`;
+      root.style.paddingTop = `${newCurrentPaddingTop}px`;
+
+      domPosition = Object.assign(domPosition, {
+          currentPaddingTop: newCurrentPaddingTop,
+          currentPaddingBottom: newCurrentPaddingBottom
+      });
+    }
+
+    var topSentCallback = (entry) => {
+
+      var currentY = entry.boundingClientRect.top;
+      var currentRatio = entry.intersectionRatio;
+      var isIntersecting = entry.isIntersecting;
+
+      // 是否上滑
+      var isScrollUp = currentY > domPosition.topSentinelPreviousY && isIntersecting && currentRatio >= domPosition.topSentinelPreviousRatio;
+
+      if (isScrollUp) {
+        console.log('topSentCallback.. go');
+        var firstIndex = getWindowFirstIndex(false);
+        render(firstIndex);
+        adjustPaddings(false);
+        domPosition = Object.assign(domPosition, {
+          currentIndex: firstIndex,
+          topSentinelPreviousY: currentY,
+          topSentinelPreviousRatio: currentRatio
+        });
+      } else {
+        domPosition = Object.assign(domPosition, {
+          topSentinelPreviousY: currentY,
+          topSentinelPreviousRatio: currentRatio
+        });
+      }
+    }
+
+    var botSentCallback = (entry) => {
+      var currentY = entry.boundingClientRect.top;
+      var currentRatio = entry.intersectionRatio;
+      var isIntersecting = entry.isIntersecting;
+
+      // 是否下滑
+      var isScrollDown = currentY < domPosition.bottomSentinelPreviousY && currentRatio >= domPosition.bottomSentinelPreviousRatio && isIntersecting
+
+      if (isScrollDown) {
+        console.log('botSentCallback.. go');
+        var firstIndex = getWindowFirstIndex(true);
+        render(firstIndex);
+        adjustPaddings(true);
+        domPosition = Object.assign(domPosition, {
+          currentIndex: firstIndex,
+          bottomSentinelPreviousY: currentY,
+          bottomSentinelPreviousRatio: currentRatio
+        });
+      } else {
+        domPosition = Object.assign(domPosition, {
+          bottomSentinelPreviousY: currentY,
+          bottomSentinelPreviousRatio: currentRatio
+        });
+      }
+    }
+
+    var options = {
+      // root: root, 
+      rootMargin: '0px', 
+      threshold: 1.0
+    }
+    var callback = function(entries, observer) {
+      entries.forEach(entry => {
+        if (entry.target === firstItem) {
+            // 当第一个元素进入视窗
+            topSentCallback(entry);
+        } else if (entry.target === lastItem) {
+            // 当最后一个元素进入视窗
+            botSentCallback(entry);
+        }
+      });
+    };
+    // 观察者创建
+    var observer = new IntersectionObserver(callback, options);
+
+    // 观察列表第一个以及最后一个元素
+    observer.observe(firstItem);
+    observer.observe(lastItem);
+  </script>
+</body>
+</html>

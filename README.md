@@ -18,3 +18,4 @@
 - [scroll event - 滚动事件](https://yijinc.github.io/learn/js05/scroll-event.html)
 - [拖拽drag - mousedown-move-up](https://yijinc.github.io/learn/js05/drag.html)
 - [class 继承 - canvas绘制小球 ](https://yijinc.github.io/learn/js01/classExtends.html)
+- [Intersection Observer实现无限滚动](https://yijinc.github.io/learn/js06/Intersection-observer.html)
